@@ -7,13 +7,19 @@ module.exports = async(args) => {
 	args.router
     .redirect('/', '/index')
     .get("/index", async(ctx) => {
-		var args = [];
+		var args = [], posts = [];
 		for (var i=0;i<14;++i) {
 			args.push({url:`/images/${i}.jpg`});
 		}
+		posts[0] = (await Post.get("news")).slice(0, 5);
+		posts[1] = (await Post.get("acm")).slice(0, 5);
+		posts[2] = (await Post.get("member")).slice(0, 5);
+		posts[3] = (await Post.get("teacher")).slice(0, 5);
+		posts[4] = (await Post.get("solution")).slice(0,5);
 		await ctx.render('index', {
 			user: ctx.session.user,
-			image_views: args
+			image_views: args,
+			posts: posts
 		});
     })
 	
@@ -118,7 +124,7 @@ module.exports = async(args) => {
 		});
 	})
 	
-	.get("/user", async (ctx) => {
+/*	.get("/user", async (ctx) => {
 		if (ctx.session.user) {
 			await ctx.render('user', {
 				hint: "",
@@ -189,5 +195,5 @@ module.exports = async(args) => {
 				hint: ""
 			});
 		}
-	})
+	})*/
 };
