@@ -38,8 +38,8 @@ var User = require('./models/user');
 		httpOnly: true,
 		signed: true,
 		rolling: false,
-		store:{
-			get:function(key, maxAge, opt){
+/*		store:{
+			get:function(key, maxAge, opt) {
 				console.log(key);
 				console.log(maxAge);
 				console.log(opt);
@@ -61,7 +61,7 @@ var User = require('./models/user');
 					});
 				});
 			},
-			set:function(key, value, maxAge, opt){
+			set:function(key, value, maxAge, opt) {
 				mongodb.open(function(resolve) {
 					mongodb.open(function(err, db) {
 						if (err) {
@@ -73,15 +73,15 @@ var User = require('./models/user');
 								return;
 							}
 							collection.ensureIndex('name', {unique: true});
-							collection.insert(value, {safee: true}, function(err, value) {
+							collection.insert(value, {safe: true}, function(err, value) {
 								mongodb.close();
 							});
 						}); 
 					});
 				});
 			},
-			destroy:function(key){}
-		}
+			destroy:function(key) {}
+		}*/
 	}, app));
 	app.listen(3000);
 })();

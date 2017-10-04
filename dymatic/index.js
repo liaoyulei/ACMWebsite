@@ -1,5 +1,6 @@
-//ÔÚÕâÀï´¦ÀíÖ÷Ò³(/index)·½ÃæµÄ¶¯Ì¬ÄÚÈİ
+//åœ¨è¿™é‡Œå¤„ç†ä¸»é¡µ(/index)æ–¹é¢çš„åŠ¨æ€å†…å®¹
 var crypto = require('crypto');
+var nodemailer = require('nodemailer');
 var User = require('../models/user');
 var Post = require('../models/post');
 
@@ -32,10 +33,10 @@ module.exports = async(args) => {
 	.post("/reg", async(ctx) => {
 		if (ctx.request.body['password-repeat'] != ctx.request.body['password']) {
 			await ctx.render('reg', {
-				hint: "Á½´ÎÊäÈëµÄÃÜÂë²»Ò»ÖÂ£¡"
+				hint: "ä¸¤æ¬¡è¾“å…¥çš„å¯†ç ä¸ä¸€è‡´ï¼"
 			});
 		}
-		//Éú³É¿ÚÁîµÄÉ¢ÁĞ
+		//ç”Ÿæˆå£ä»¤çš„æ•£åˆ—
 		else {
 			var md5 = crypto.createHash('md5');
 			var password = md5.update(ctx.request.body['password']).digest('base64');
@@ -44,18 +45,18 @@ module.exports = async(args) => {
 				password: password,
 				email: ctx.request.body['email'],
 			});
-			//¼ì²éÓÃ»§ÃûÊÇ·ñÒÑ¾­´æÔÚ
+			//æ£€æŸ¥ç”¨æˆ·åæ˜¯å¦å·²ç»å­˜åœ¨
 			var user = await User.get(newUser.name);
 			if (user) {
 				await ctx.render('reg', {
-					hint: "ÓÃ»§ÃûÒÑ´æÔÚ£¡"
+					hint: "ç”¨æˆ·åå·²å­˜åœ¨ï¼"
 				});
 			}
 			else {
 				var err = await User.save(newUser);
 				if (err) {
 					await ctx.render('reg', {
-						hint: "Î´Öª´íÎó£¡"
+						hint: "æœªçŸ¥é”™è¯¯ï¼"
 					});
 				}
 				else {
@@ -73,23 +74,57 @@ module.exports = async(args) => {
 	})
 	
 	.post("/login", async(ctx) => {
-		var md5 = crypto.createHash('md5');
-		var password =  md5.update(ctx.request.body['password']).digest('base64');
-		
 		var user = await User.get(ctx.request.body['username']);
 		if (!user) {
 			await ctx.render('login', {
-				hint: "ÓÃ»§²»´æÔÚ£¡"
+				hint: "ç”¨æˆ·ä¸å­˜åœ¨ï¼"
 			});
 		}
-		else if (user.password != password) {
+		else if (ctx.request.body['submit'] == "forget") {
+			var transport = nodemailer.createTransport({  
+                host: "smtp.ruc.edu.cn",  
+                secureConnection : true, // use SSL  
+                port: 465, // port for secure SMTP  
+                auth : {  
+                    user : "2015201953@ruc.edu.cn",  
+                    pass : "lyl123456"
+                }
+            });  
+			var newusession = "";
+			for (var i = 0; i < 12; ++i) {
+				newusession += Math.floor(Math.random() * 10);
+			}
+			transport.sendMail({  
+                from: "2015201953@ruc.edu.cn",  
+                to: user.email,
+                subject: "RUC_ACMç”¨æˆ·å¯†ç æ‰¾å›",  
+                generateTextFromHTML: true,
+                html: "ç”¨æˆ·:" + user.name 
+						+ "ï¼Œè¯·ç‚¹å‡»ï¼ˆå¤åˆ¶ï¼‰æ­¤é“¾æ¥è¿›è¡Œå¯†ç æ›´æ–°:<a href=http://"  
+                        + ctx.headers.host + "/forget?usession="  
+                        + newusession + "  >" + ctx.headers.host  
+                        + "/forget?usession=" + newusession  
+                        + "</a>ã€‚"  
+            }, function(error, response) { 
+				transport.close();
+            });
+			ctx.session.usession = newusession;
 			await ctx.render('login', {
-				hint: "ÓÃ»§ÃÜÂë´íÎó£¡"
+				hint: "è¯·è¿›å…¥æ‚¨çš„é‚®ç®±" + user.email.slice(0, 1) + "*****" + user.email.slice(user.email.indexOf('@')) + "æŸ¥æ”¶é‚®ä»¶ï¼"
 			});
-		}
-		else{
-			ctx.session.user = user;
-			ctx.redirect('/index');
+		} 
+		else if (ctx.request.body['submit'] == "login") {
+			var md5 = crypto.createHash('md5');
+			var password =  md5.update(ctx.request.body['password']).digest('base64');
+			if (user.password != password) {
+				await ctx.render('login', {
+					hint: "ç”¨æˆ·å¯†ç é”™è¯¯ï¼"
+				});
+			}
+			else{
+				ctx.session.user = user;
+				ctx.redirect('/index');
+			}
 		}
 	})
 	
@@ -115,7 +150,7 @@ module.exports = async(args) => {
 		else {
 			for (var i=0;i<posts.length;++i) {
 				posts[i].detail = posts[i].detail.substring(0,200);
-				posts[i].detail += "¡­¡­";
+				posts[i].detail += "â€¦â€¦";
 			}
 		}
 		await ctx.render('u', {
@@ -124,7 +159,7 @@ module.exports = async(args) => {
 		});
 	})
 	
-/*	.get("/user", async (ctx) => {
+	.get("/user", async (ctx) => {
 		if (ctx.session.user) {
 			await ctx.render('user', {
 				hint: "",
@@ -135,30 +170,30 @@ module.exports = async(args) => {
 		}
 	});
 	
-	.post("/user", async (ctx) => ) {
+/*	.post("/user", async (ctx) => {
 		var md5 = crypto.createHash('md5');
 		var password = md5.update(ctx.request.body['passsword-old']).digest('base64');
 		var user = await User.get(ctx.request.body['username']);
 		if (user.password != password) {
 			await ctx.render('user'), {
-				hint: "Ô­ÃÜÂë´íÎó£¡",
+				hint: "åŸå¯†ç é”™è¯¯ï¼",
 				user: ctx.session.user
 			});
 		}
 		else if (ctx.request.body['password-repeat'] != ctx.request.body['password-new']) {
 			await ctx.render('reg', {
-				hint: "Á½´ÎÊäÈëµÄĞÂÃÜÂë²»Ò»ÖÂ£¡",
+				hint: "ä¸¤æ¬¡è¾“å…¥çš„æ–°å¯†ç ä¸ä¸€è‡´ï¼",
 				user: ctx.session.user
 			});
 		}
-		//Éú³É¿ÚÁîµÄÉ¢ÁĞ
+		//ç”Ÿæˆå£ä»¤çš„æ•£åˆ—
 		else {
 			user.password = md5.update(ctx.request.body['password-new']).digest('base64');
 			else {
 				var err = await User.save(newUser);
 				if (err) {
 					await ctx.render('reg', {
-						hint: "Î´Öª´íÎó£¡"
+						hint: "æœªçŸ¥é”™è¯¯ï¼"
 					});
 				}
 				else {
@@ -169,7 +204,7 @@ module.exports = async(args) => {
 		}
 	}
 	
-	.get("/admin", async(ctx) => {
+/*	.get("/admin", async(ctx) => {
 		await ctx.render('admin', {
 			hint: ""
 		});
@@ -187,7 +222,7 @@ module.exports = async(args) => {
 		var err = await Post.save(newPost);
 		if (err) {
 			await ctx.render('admin', {
-				hint: "Î´Öª´íÎó£¡"
+				hint: "æœªçŸ¥é”™è¯¯ï¼"
 			});
 		}
 		else {
