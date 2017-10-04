@@ -1,1 +1,3 @@
-2017.07.16	第一次更新，基本的静态页面与UI
+安装mongoDB
+npm install
+npm start

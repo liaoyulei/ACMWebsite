@@ -36,6 +36,48 @@ Post.save = function save(post) {
 	});
 };
 
+Post.del = function del(postid) {
+	return new Promise(function(resolve) {
+		mongodb.open(function(err, db) {
+			if (err) {
+				resolve(err);
+				return;
+			}
+			db.collection('posts', function(err, collection) {
+				if (err) {
+					resolve(err);
+					return;
+				}
+				collection.remove({_id: postid}, function(err, doc) {
+					mongodb.close();
+					resolve(err);
+				});
+			});
+		});
+	});
+}
+
+Post.update = function update(post) {
+	return new Promise(function(resolve) {
+		mongodb.open(function(err, db) {
+			if (err) {
+				resolve(err);
+				return;
+			}
+			db.collection('posts', function(err, collection) {
+				if (err) {
+					resolve(err);
+					return;
+				}
+				collection.save(post, function(err, doc) {
+					mongodb.close();
+					resolve(err);
+				});
+			});
+		});
+	});
+}
+
 Post.get = function get(type) {
 	return new Promise(function(resolve) {
 		mongodb.open(function(err, db) {

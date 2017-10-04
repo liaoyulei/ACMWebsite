@@ -27,12 +27,54 @@ User.save = function save(user) {
 				//写入 user 文档
 				collection.insert(user, {safe: true}, function(err, user) {
 					mongodb.close();
-					resolve();
+					resolve(err);
 				});
 			});
 		});
 	});
 };
+
+User.del = function del(username) {
+	return new Promise(function(resolve) {
+		mongodb.open(function(err, db) {
+			if (err) {
+				resolve(err);
+				return;
+			}
+			db.collection('users', function(err, collection) {
+				if (err) {
+					resolve(err);
+					return;
+				}
+				collection.remove({name: usename}, function(err, doc) {
+					mongodb.close();
+					resolve(err);
+				});
+			})
+		});
+	});
+}
+
+User.update = function update(user) {
+	return new Promise(function(resolve) {
+		mongodb.open(function(err, db) {
+			if (err) {
+				resolve(err);
+				return;
+			}
+			db.collection('users', function(err, collection) {
+				if (err) {
+					resolve(err);
+					return;
+				}
+				collection.save(user, function(err, doc) {
+					mongodb.close();
+					resolve(err);
+				});
+			});
+		});
+	});
+}
 
 User.get = function get(username) {
 	return new Promise(function(resolve) {
@@ -53,7 +95,7 @@ User.get = function get(username) {
 					mongodb.close();
 					if (doc) {
 						//封装文档为 User 对象
-						resolve(new User(doc));
+						resolve(doc);
 					}
 					else{
 						resolve();

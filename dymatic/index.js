@@ -33,7 +33,7 @@ module.exports = async(args) => {
 	.post("/reg", async(ctx) => {
 		if (ctx.request.body['password-repeat'] != ctx.request.body['password']) {
 			await ctx.render('reg', {
-				hint: "两次输入的密码不一致！"
+				hint: "两次输入的密码不一致"
 			});
 		}
 		//生成口令的散列
@@ -49,14 +49,14 @@ module.exports = async(args) => {
 			var user = await User.get(newUser.name);
 			if (user) {
 				await ctx.render('reg', {
-					hint: "用户名已存在！"
+					hint: "用户名已存在"
 				});
 			}
 			else {
 				var err = await User.save(newUser);
 				if (err) {
 					await ctx.render('reg', {
-						hint: "未知错误！"
+						hint: "未知错误，请稍候重试"
 					});
 				}
 				else {
@@ -77,7 +77,7 @@ module.exports = async(args) => {
 		var user = await User.get(ctx.request.body['username']);
 		if (!user) {
 			await ctx.render('login', {
-				hint: "用户不存在！"
+				hint: "用户不存在"
 			});
 		}
 		else if (ctx.request.body['submit'] == "forget") {
@@ -101,16 +101,16 @@ module.exports = async(args) => {
                 generateTextFromHTML: true,
                 html: "用户:" + user.name 
 						+ "，请点击（复制）此链接进行密码更新:<a href=http://"  
-                        + ctx.headers.host + "/forget?usession="  
+                        + ctx.headers.host + "/forget?usename=" + user.name + "&usession="  
                         + newusession + "  >" + ctx.headers.host  
-                        + "/forget?usession=" + newusession  
-                        + "</a>。"  
+                        + "/forget?usename=" + user.name + "&usession=" + newusession  
+                        + "</a>。如果链接失效，请重试。"  
             }, function(error, response) { 
 				transport.close();
             });
 			ctx.session.usession = newusession;
 			await ctx.render('login', {
-				hint: "请进入您的邮箱" + user.email.slice(0, 1) + "*****" + user.email.slice(user.email.indexOf('@')) + "查收邮件！"
+				hint: "请进入您的邮箱" + user.email.slice(0, 1) + "*****" + user.email.slice(user.email.indexOf('@')) + "查收邮件"
 			});
 		} 
 		else if (ctx.request.body['submit'] == "login") {
@@ -118,12 +118,47 @@ module.exports = async(args) => {
 			var password =  md5.update(ctx.request.body['password']).digest('base64');
 			if (user.password != password) {
 				await ctx.render('login', {
-					hint: "用户密码错误！"
+					hint: "用户密码错误"
 				});
 			}
 			else{
 				ctx.session.user = user;
 				ctx.redirect('/index');
+			}
+		}
+	})
+	
+	.get("/forget", async(ctx) => {
+		if (ctx.query['usession'] == ctx.session.usession) {
+			var user = await User.get(ctx.query['usename']);
+			await ctx.render('forget', {
+				hint: "",
+				user: user
+			});
+		}
+	})
+	
+	.post("/forget", async(ctx) => {
+		var user = await User.get(ctx.request.body['username']);
+		if (ctx.request.body['password-repeat'] != ctx.request.body['password']) {
+			await ctx.render('reg', {
+				hint: "两次输入的密码不一致",
+				user: user
+			});
+		}
+		//生成口令的散列
+		else {
+			var md5 = crypto.createHash('md5');
+			user.password = md5.update(ctx.request.body['password']).digest('base64');
+			var err = await User.update(user);
+			if (err) {
+				await ctx.render('/forget', {
+					hint: "未知错误，请稍候重试",
+					user: user
+				});
+			}
+			else {
+				ctx.redirect('/login');
 			}
 		}
 	})
@@ -136,7 +171,7 @@ module.exports = async(args) => {
 	.get("/u", async(ctx) => {
 		var posts = await Post.get(ctx.query['type']);
 		if (ctx.query['id']) {
-			for (var i=0;i<posts.length;++i) {
+			for (var i = 0; i < posts.length; ++i) {
 				if (posts[i]._id == ctx.query['id']) {
 					posts[i].detail = posts[i].detail.replace(/ /g, "&ensp;");
 					posts[i].detail = posts[i].detail.replace(/\t/g, "&emsp;");
@@ -170,35 +205,35 @@ module.exports = async(args) => {
 		}
 	});
 	
-/*	.post("/user", async (ctx) => {
+	.post("/user", async (ctx) => {
 		var md5 = crypto.createHash('md5');
 		var password = md5.update(ctx.request.body['passsword-old']).digest('base64');
 		var user = await User.get(ctx.request.body['username']);
 		if (user.password != password) {
 			await ctx.render('user'), {
-				hint: "原密码错误！",
+				hint: "原密码错误",
 				user: ctx.session.user
 			});
 		}
 		else if (ctx.request.body['password-repeat'] != ctx.request.body['password-new']) {
-			await ctx.render('reg', {
-				hint: "两次输入的新密码不一致！",
-				user: ctx.session.user
+			await ctx.render('user', {
+				hint: "两次输入的新密码不一致",
+				user: user
 			});
 		}
 		//生成口令的散列
 		else {
 			user.password = md5.update(ctx.request.body['password-new']).digest('base64');
 			else {
-				var err = await User.save(newUser);
+				var err = await User.update(user);
 				if (err) {
-					await ctx.render('reg', {
-						hint: "未知错误！"
+					await ctx.render('user', {
+						hint: "未知错误，请稍候重试"
 					});
 				}
 				else {
 					ctx.session.user = newUser;
-					ctx.redirect('/index');
+					ctx.redirect('/login');
 				}
 			}
 		}
@@ -222,7 +257,7 @@ module.exports = async(args) => {
 		var err = await Post.save(newPost);
 		if (err) {
 			await ctx.render('admin', {
-				hint: "未知错误！"
+				hint: "未知错误，请稍候重试"
 			});
 		}
 		else {
