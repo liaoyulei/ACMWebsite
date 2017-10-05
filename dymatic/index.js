@@ -129,8 +129,8 @@ module.exports = async(args) => {
 	})
 	
 	.get("/forget", async(ctx) => {
-		if (ctx.query['usession'] == ctx.session.usession) {
-			var user = await User.get(ctx.query['usename']);
+		var user = await User.get(ctx.query['usename']);
+		if (user && ctx.query['usession'] == ctx.session.usession) {
 			await ctx.render('forget', {
 				hint: "",
 				user: user
@@ -239,13 +239,13 @@ module.exports = async(args) => {
 		}
 	}
 	
-/*	.get("/admin", async(ctx) => {
+	.get("/admin", async(ctx) => {
 		await ctx.render('admin', {
 			hint: ""
 		});
 	})
 	
-	.post("/admin", async(ctx) => {
+/*	.post("/admin", async(ctx) => {
 		var time = new Date();
 		var newPost = new Post({
 			title: ctx.request.body['title'],
