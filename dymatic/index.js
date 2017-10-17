@@ -200,17 +200,18 @@ module.exports = async(args) => {
 				hint: "",
 				user: ctx.session.user
 			});
-		} else {
+		}
+		else {
 			ctx.redirect('/login');
 		}
-	});
+	})
 	
 	.post("/user", async (ctx) => {
 		var md5 = crypto.createHash('md5');
 		var password = md5.update(ctx.request.body['passsword-old']).digest('base64');
 		var user = await User.get(ctx.request.body['username']);
 		if (user.password != password) {
-			await ctx.render('user'), {
+			await ctx.render('user', {
 				hint: "原密码错误",
 				user: ctx.session.user
 			});
@@ -224,26 +225,24 @@ module.exports = async(args) => {
 		//生成口令的散列
 		else {
 			user.password = md5.update(ctx.request.body['password-new']).digest('base64');
+			var err = await User.update(user);
+			if (err) {
+				await ctx.render('user', {
+					hint: "未知错误，请稍候重试"
+				});
+			}
 			else {
-				var err = await User.update(user);
-				if (err) {
-					await ctx.render('user', {
-						hint: "未知错误，请稍候重试"
-					});
-				}
-				else {
-					ctx.session.user = newUser;
-					ctx.redirect('/login');
-				}
+				ctx.session.user = newUser;
+				ctx.redirect('/login');
 			}
 		}
-	}
+	})
 	
-	.get("/admin", async(ctx) => {
+/*	.get("/admin", async (ctx) => {
 		await ctx.render('admin', {
 			hint: ""
 		});
-	})
+	})*/
 	
 /*	.post("/admin", async(ctx) => {
 		var time = new Date();
