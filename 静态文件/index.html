@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.1/build/pure-min.css" integrity="sha384-CCTZv2q9I9m3UOxRLaJneXrrqKwUNOzZ6NGEUMwHtShDJ+nCoiXJCAgi05KfkLGY" crossorigin="anonymous">
+		<link href="index.css" rel="stylesheet" type="text/css" />
+		<link href="carousel.css" rel="stylesheet" type="text/css" />
+		<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+	<body>
+		<div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+			<a class="pure-menu-heading" href="index">网站首页</a>
+			<ul class="pure-menu-list">
+				<li class="pure-menu-item"><a href="u?type=news" class="pure-menu-link">新闻报道</a></li>
+				<li class="pure-menu-item"><a href="u?type=acm" class="pure-menu-link">人大ACM</a></li>
+				<li class="pure-menu-item"><a href="u?type=member" class="pure-menu-link">成员简介</a></li>
+				<li class="pure-menu-item"><a href="u?type=teacher" class="pure-menu-link">教师课件</a></li>
+				<li class="pure-menu-item"><a href="u?type=solution" class="pure-menu-link">解题报告</a></li>
+				<li class="pure-menu-item"><a href="oj" class="pure-menu-link">OnlineJudge</a></li>
+				<li class="pure-menu-item"><a href="login" class="pure-menu-link">登入</a></li>
+				<li class="pure-menu-item"><a href="reg" class="pure-menu-link">注册</a></li>
+				<li class="pure-menu-item"><a href="admin" class="pure-menu-link">管理员入口</a></li>
+			</ul>
+		</div>
+		
+	<!--	<div class="splash" id="splash">
+			<div class="carousel1">
+				<div class="horizontal-box carousel-box">
+					<div class="horizontal carousel">
+						<ul class="clearfix">
+					<!--		<% for (var i=0;i<image_views.length;++i) { %>
+								<li><img src="<%=image_views[i].url %>" alt=""></li>
+							<% } %>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>-->
+		<div class="l-box-lrg ribbon pure-g">
+			<div class="l-box pure-u-1-4">
+				
+			</div>
+		</div>
+
+		<div class="l-box-lrg ribbon pure-g">
+			<div class="l-box pure-u-1-3">
+				<h3><a href="u?type=teacher">教师课件</a></h3>
+				<% for (var i=0;i<5&&i<posts[3].length;++i) { %>
+					<p><a href="u?type=<%=posts[3][i].type %>&id=<%=posts[3][i]._id %>"><%=posts[3][i].title %></a></a></p>
+				<% } %>
+			</div>
+			<div class="l-box pure-u-1-3">
+				<h3><a href="u?type=solution">解题报告</a></h3>
+				<% for (var i=0;i<5&&i<posts[4].length&&i<5;++i) { %>
+					<p><a href="u?type=<%=posts[4][i].type %>&id=<%=posts[4][i]._id %>"><%=posts[4][i].title %></a></a></p>
+				<% } %>
+			</div>
+			<div class="l-box pure-u-1-3">
+				<h3><a href="oj">OnlineJudge</a></h3>
+			</div> 
+		</div>
+			
+			<div class="l-box"></div>
+
+		<div class="footer l-box is-center">
+			All Copyright Reserved RUC ACM-TEAM
+		</div>
+	</body>
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript" src="carousel.js"></script>
+</html>
