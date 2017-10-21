@@ -3,12 +3,15 @@
 	<head>
 		<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.1/build/pure-min.css" integrity="sha384-CCTZv2q9I9m3UOxRLaJneXrrqKwUNOzZ6NGEUMwHtShDJ+nCoiXJCAgi05KfkLGY" crossorigin="anonymous">
 		<link href="index.css" rel="stylesheet" type="text/css" />
+		<link href="carousel.css" rel="stylesheet" type="text/css" />
 		<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
 	</head>
-	<body>
-		<div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+	
+	<body class="pure-g">
+		<div class="pure-u-1">请在此处添加图片</div>
+		<div class="home-menu pure-menu pure-menu-horizontal pure-u-1">
 			<a class="pure-menu-heading" href="index">网站首页</a>
-			<div class="pure-menu-list">
+			<ul class="pure-menu-list">
 				<li class="pure-menu-item"><a href="u?type=news" class="pure-menu-link">新闻报道</a></li>
 				<li class="pure-menu-item"><a href="u?type=acm" class="pure-menu-link">人大ACM</a></li>
 				<li class="pure-menu-item"><a href="u?type=member" class="pure-menu-link">成员简介</a></li>
@@ -17,10 +20,11 @@
 				<li class="pure-menu-item"><a href="oj" class="pure-menu-link">OnlineJudge</a></li>
 				<li class="pure-menu-item"><a href="login" class="pure-menu-link">登入</a></li>
 				<li class="pure-menu-item"><a href="reg" class="pure-menu-link">注册</a></li>
-			</div>
+				<li class="pure-menu-item"><a href="admin" class="pure-menu-link">管理员入口</a></li>
+			</ul>
 		</div>
 		
-		<div class="splash"><form class="pure-form pure-form-aligned" method="post"><fieldset>
+		<div class="pure-u-1 is-center"><form class="pure-form pure-form-aligned" method="post"><fieldset>
 			<p style="color: red;"><%=hint %></p>
 			<div class="pure-control-group">
 				<label for="name">用户名</label>
@@ -34,10 +38,13 @@
 			<br /><button name="submit" type="submit" value="login" class="pure-button pure-button-primary">登入</button>
 			&emsp;&emsp;<button name="submit" type="submit" value="forget" class="pure-button">忘记密码</button>
 		</fieldset></form></div>
-
-
-		<div class="footer l-box is-center">
+		
+		
+		<div class="l-box-lrg pure-u-1"></div>
+		<div class="footer is-center pure-u-1">
 			All Copyright Reserved RUC ACM-TEAM
 		</div>
 	</body>
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript" src="carousel.js"></script>
 </html>
