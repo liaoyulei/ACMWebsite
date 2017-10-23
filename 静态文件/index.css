@@ -11,7 +11,7 @@
 body {
     line-height: 1.7em;
     color:black;
-	background-color:white/* #cceeff*/;
+	background-color:white;
     font-size: 13px;
 }
 
@@ -27,6 +27,7 @@ p {
  * -- LAYOUT STYLES --
  * These are some useful classes which I will need
  */
+ 
 .l-box {
 	margin-top: 0.2em;
 	margin-bottom: 0.2em;
@@ -85,6 +86,7 @@ li a:focus {
 /* This is the class used for the footer */
 .footer {
     background: #111;
+	color: white;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -97,21 +99,22 @@ li a:focus {
 }
 
 .post-title {
-    font-size: 2em;
-    color:black/* #222*/;
+    font-size: 1.5em;
+    color:black;
     margin-bottom: 0.2em;
+	font-weight: bold;
 }
 
 .post-detail {
     font-family: Georgia, "Cambria", serif;
-    color:black /*#444*/;
+    color:black;
     line-height: 1.8em;
 	border-bottom: 1px solid #eee;
 }
 
 .post-meta {
     color: #999;
-    font-size: 90%;
+    font-size: 0.9em;
     margin: 0;
 }
 

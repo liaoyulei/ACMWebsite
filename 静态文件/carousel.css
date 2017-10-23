@@ -15,31 +15,15 @@ ul,li {
 }
 /*需要更改的值*/
 .horizontal img {  
-	width: 650px;
-	height: 400px;
+	width: 100%;
 }
 .horizontal,
 .horizontal-box {
 	width: 650px;  /*单张图片宽度*/
 	height: 400px; /*单张图片高度*/
 }
-.vertical img {  
-	width: 300px;
-	height: 400px;
-}
-.vertical,
-.vertical-box {
-	width: 300px;  /*单张图片宽度*/
-	height: 400px; /*单张图片高度*/
-}
-.vertical ul {
-	width: 1800px; /*单张图片宽度x图片数量*/
-}
-/*多轮播选项*/
-.carousel1,
-.carousel2 {
-	float: left;
-}
+
+
 /*调整按钮位置*/
 .carousel-btn {
 	position: absolute;
