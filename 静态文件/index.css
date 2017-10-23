@@ -10,14 +10,14 @@
  */
 body {
     line-height: 1.7em;
-    color: #7f8c8d;
-	background-color: #cceeff;
+    color:black;
+	background-color:white/* #cceeff*/;
     font-size: 13px;
 }
 
 a {
     text-decoration: none;
-    color: blue;
+    color: #B0E0E6;
 }
 
 p {
@@ -32,7 +32,7 @@ p {
 	margin-bottom: 0.2em;
 	margin-left: 0.3em;
 	margin-right: 0.3em;
-	border: 0.1em solid blue;
+	border: 0.1em solid lightblue;
 }
 
 .l-box-lrg {
@@ -60,9 +60,10 @@ p {
 }
 
 .home-menu .pure-menu-heading {
-    color: blue;
+    color: black;
     font-weight: 400;
     font-size: 120%;
+    font-weight:bold;
 }
 
 .home-menu .pure-menu-selected a {
@@ -70,14 +71,15 @@ p {
 }
 
 .home-menu li a , .l-box li a{
-    color: blue;
+    color: black;
+    font-weight:bold;
 }
 
 li a:hover,
 li a:focus {
     background: none;   
     border: none;
-    color: #AECFE5;
+    color: #8470FF;
 }
 
 /* This is the class used for the footer */
@@ -96,13 +98,13 @@ li a:focus {
 
 .post-title {
     font-size: 2em;
-    color: #222;
+    color:black/* #222*/;
     margin-bottom: 0.2em;
 }
 
 .post-detail {
     font-family: Georgia, "Cambria", serif;
-    color: #444;
+    color:black /*#444*/;
     line-height: 1.8em;
 	border-bottom: 1px solid #eee;
 }
@@ -120,11 +122,11 @@ li a:focus {
 .brand-tagline {
     font-weight: 300;
     color: rgb(176, 202, 219);
-}
+} 
 
 .type {
-	background-color: blue;
-	color: black;
+	background-color:#6495ED ;
+	color:black;
 }
 
 .sidebar {
