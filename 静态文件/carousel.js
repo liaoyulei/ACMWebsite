@@ -143,13 +143,17 @@ carouselProto.stop = function() {
 };
 
 var carousel = function(eleSelec, wrapSelec) {
+/*	alert(document.body.style.width);
+	document.getElementsByClassName("horizontal-box")[0].style.width = document.body.style.width;
+	alert(document.getElementsByClassName("horizontal-box")[0].style.width);*/
 	var that = Object.create(carouselProto);
 	that.wrapSelec = wrapSelec;
 	that.ele = $(eleSelec);
 	that.container = $(wrapSelec);
 	that.len = that.ele.getElementsByTagName("img").length;
 	that.width = parseInt(getCSS(that.ele.getElementsByTagName("img")[0], "width"));
-	document.getElementsByClassName("clearfix")[0].style.width = that.width * that.len + "px";
+//	document.getElementsByClassName("clearfix")[0].style.width = that.width * that.len + "px";
+//	alert(document.getElementsByClassName("horizontal-box")[0].style.width);
 	return that;
 }
 

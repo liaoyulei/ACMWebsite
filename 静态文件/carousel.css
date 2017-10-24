@@ -3,6 +3,11 @@ ul,li {
 	padding: 0;
 	margin: 0;
 }
+
+.clearfix {
+	width: 600%;
+}
+
 .clearfix:after {
 	content: ".";
 	height: 0;
@@ -10,17 +15,14 @@ ul,li {
 	visibility: hidden;
 	clear: both;
 }
-.clearfix {
-	*zoom:1;
-}
+
 /*需要更改的值*/
 .horizontal img {  
 	width: 100%;
 }
 .horizontal,
 .horizontal-box {
-	width: 650px;  /*单张图片宽度*/
-	height: 400px; /*单张图片高度*/
+	width: 100%;
 }
 
 

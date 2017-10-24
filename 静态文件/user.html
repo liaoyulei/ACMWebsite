@@ -8,55 +8,63 @@
 	</head>
 	
 	<body class="pure-g">
-		<div class="pure-u-1"><center><img src="images/logo.png"></center></div>
-		<div class="home-menu pure-menu pure-menu-horizontal pure-u-1">
-			<a class="pure-menu-heading" href="index">网站首页</a>
-			<ul class="pure-menu-list">
-				<li class="pure-menu-item"><a href="u?type=news" class="pure-menu-link">新闻报道</a></li>
-				<li class="pure-menu-item"><a href="u?type=acm" class="pure-menu-link">人大ACM</a></li>
-				<li class="pure-menu-item"><a href="u?type=member" class="pure-menu-link">成员简介</a></li>
-				<li class="pure-menu-item"><a href="u?type=teacher" class="pure-menu-link">教师课件</a></li>
-				<li class="pure-menu-item"><a href="u?type=solution" class="pure-menu-link">解题报告</a></li>
-				<li class="pure-menu-item"><a href="oj" class="pure-menu-link">OnlineJudge</a></li>
-				<li class="pure-menu-item"><a href="login" class="pure-menu-link">登入</a></li>
-				<li class="pure-menu-item"><a href="reg" class="pure-menu-link">注册</a></li>
-				<li class="pure-menu-item"><a href="admin" class="pure-menu-link">管理员入口</a></li>
-			</ul>
+		<div class="pure-u-1-12"></div>
+		<div class="pure-u-5-6 is-center">
+			<img src="images/logo.png">
+			<div class="home-menu pure-menu pure-menu-horizontal pure-u-1">
+				<ul class="pure-menu-list">
+					<li class="pure-menu-heading"><a  href="index">网站首页</a></li>
+					<li class="pure-menu-item"><a href="u?type=news" class="pure-menu-link">新闻报道</a></li>
+					<li class="pure-menu-item"><a href="u?type=acm" class="pure-menu-link">ACM简介</a></li>
+					<li class="pure-menu-item"><a href="u?type=rucacm" class="pure-menu-link">人大ACM</a></li>
+					<li class="pure-menu-item"><a href="u?type=member" class="pure-menu-link">成员简介</a></li>
+					<li class="pure-menu-item"><a href="u?type=teacher" class="pure-menu-link">教师课件</a></li>
+					<li class="pure-menu-item"><a href="u?type=solution" class="pure-menu-link">解题报告</a></li>
+					<li class="pure-menu-item"><a href="oj" class="pure-menu-link">OnlineJudge</a></li>
+					<li class="pure-menu-item"><a href="login" class="pure-menu-link">登入</a></li>
+					<li class="pure-menu-item"><a href="reg" class="pure-menu-link">注册</a></li>
+				</ul>
+			</div>
 		</div>
+		<div class="pure-u-1-12"></div>
 		
-		<div class="pure-u-1 is-center"><form class="pure-form pure-form-aligned" method="post"><fieldset>
+		<div class="pure-u-1-12"></div>
+		<div class="pure-u-5-6 is-center">
+			<form class="pure-form pure-form-aligned" method="post"><fieldset>
 			<p style="color: red;"><%=hint %></p>
-			<div class="pure-control-group">
-				<label for="name">用户名</label>
-				<input id="username" name="username" type="text" placeholder="Username" value="<%=user.name %>" readonly>
-			</div>
-			
-			<div class="pure-control-group">
-				<label for="email">邮箱地址</label>
-				<input id="email" name="email" type="email" placeholder="Email Address" value="<%=user.email %>" readonly>
-			</div>
-			
-			<div class="pure-control-group">
-				<label for="password">原密码</label>
-				<input id="password-old" name="password-old" type="password" placeholder="Password">
-			</div>
-			
-			<div class="pure-control-group">
-				<label for="password">新密码</label>
-				<input id="password-new" name="password-new" type="password" placeholder="Password">
-			</div>
-			
-			<div class="pure-control-group">
-				<label for="password">确认密码</label>
-				<input id="password-repeat" name="password-repeat" type="password" placeholder="Password">
-			</div>
-			<br /><button type="submit" class="pure-button pure-button-primary">修改密码</button>
-		</fieldset></form></div>
+				<div class="pure-control-group">
+					<label for="name">用户名</label>
+					<input id="username" name="username" type="text" placeholder="Username" value="<%=user.name %>" readonly>
+				</div>
+				
+				<div class="pure-control-group">
+					<label for="email">邮箱地址</label>
+					<input id="email" name="email" type="email" placeholder="Email Address" value="<%=user.email %>" readonly>
+				</div>
+				
+				<div class="pure-control-group">
+					<label for="password">原密码</label>
+					<input id="password-old" name="password-old" type="password" placeholder="Password">
+				</div>
+				
+				<div class="pure-control-group">
+					<label for="password">新密码</label>
+					<input id="password-new" name="password-new" type="password" placeholder="Password">
+				</div>
+				
+				<div class="pure-control-group">
+					<label for="password">确认密码</label>
+					<input id="password-repeat" name="password-repeat" type="password" placeholder="Password">
+				</div>
+				<br /><button type="submit" class="pure-button pure-button-primary">修改密码</button>
+			</fieldset></form>
+		</div>
+		<div class="pure-u-1-12"></div>
 		
-		<div class="pure-u-1"><center><img src="images/logo1.png"></center></div>
+		<div class="pure-u-1-12"></div>
+		<div class="pure-u-5-6 is-center"><img src="images/logo1.png"></div>
+		<div class="pure-u-1-12"></div>
 		<div class="l-box-lrg pure-u-1"></div>
 		<div class="footer is-center pure-u-1">All Copyright Reserved RUC ACM-TEAM</div>
 	</body>
-	<script type="text/javascript" src="util.js"></script>
-	<script type="text/javascript" src="carousel.js"></script>
 </html>
