@@ -16,15 +16,6 @@ ul,li {
 	clear: both;
 }
 
-/*需要更改的值*/
-.horizontal img {  
-	width: 100%;
-}
-.horizontal,
-.horizontal-box {
-	width: 100%;
-}
-
 
 /*调整按钮位置*/
 .carousel-btn {
@@ -72,8 +63,8 @@ ul,li {
 	text-align: center;
 	line-height: 50px;
 	-webkit-user-select:none;
-	   -moz-user-select:none;    
-	    -ms-user-select:none;    
+	   -moz-user-select:none;    
+	    -ms-user-select:none;    
 	        user-select:none;
 }
 .arrow:hover {

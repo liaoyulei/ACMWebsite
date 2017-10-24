@@ -21,6 +21,7 @@ p {
 img {
 	max-width: 100%;
 }
+
 /*
  * -- LAYOUT STYLES --
  * These are some useful classes which I will need
@@ -128,9 +129,3 @@ li a:focus {
 	color: black;
 	border-right: 1px solid #ccc;
 }
-
-/*
- * -- TABLET (AND UP) MEDIA QUERIES --
- * On tablets and other medium-sized devices, we want to customize some
- * of the mobile styles.
- */

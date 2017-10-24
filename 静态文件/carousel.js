@@ -19,6 +19,7 @@ var animate = function() {
 }();
 
 var carouselProto = {};
+var carousel1;
 carouselProto.light = function(index) {
 	removeClass(this.active, "active");
 	this.active = $(this.wrapSelec + " " + "[index=" + index + "]");
@@ -34,7 +35,8 @@ carouselProto.go = function(dire) {
 	if (dire === "next") {
 		nextIndex = (index + 1) % len;
 		nextPosition = (this.ele.scrollLeft + width) % (width * len);
-	} else {
+	} 
+	else {
 		nextIndex = index === 0 ? len-1 : index-1,
 		nextPosition = this.ele.scrollLeft === 0 ? width * len : this.ele.scrollLeft - width;
 	}
@@ -134,6 +136,7 @@ carouselProto.start = function(dir, th, lo) {
 		this.init();
 	}
 	this.begin = setTimeout(function() {
+	//	that = carousel(".horizontal", ".horizontal-box");
 		that.circle();
 	}, that.t);
 };
@@ -143,21 +146,29 @@ carouselProto.stop = function() {
 };
 
 var carousel = function(eleSelec, wrapSelec) {
-/*	alert(document.body.style.width);
-	document.getElementsByClassName("horizontal-box")[0].style.width = document.body.style.width;
-	alert(document.getElementsByClassName("horizontal-box")[0].style.width);*/
 	var that = Object.create(carouselProto);
 	that.wrapSelec = wrapSelec;
 	that.ele = $(eleSelec);
 	that.container = $(wrapSelec);
 	that.len = that.ele.getElementsByTagName("img").length;
-	that.width = parseInt(getCSS(that.ele.getElementsByTagName("img")[0], "width"));
-//	document.getElementsByClassName("clearfix")[0].style.width = that.width * that.len + "px";
-//	alert(document.getElementsByClassName("horizontal-box")[0].style.width);
+	that.width = 10 * parseInt(document.getElementById("carousel").clientWidth / 10.5263);
+	document.getElementsByClassName("horizontal")[0].style.width = that.width + "px";
+	document.getElementsByClassName("horizontal-box")[0].style.width = that.width + "px";
+	document.getElementsByClassName("clearfix")[0].style.width = that.width * that.len + "px";
+	for(var i = 0; i < that.len; ++i) {
+		that.ele.getElementsByTagName("img")[i].style.width = that.width + "px";
+	}
 	return that;
 }
 
 window.onload = function() {
-	var carousel1 = carousel(".horizontal", ".horizontal-box");
-		carousel1.start("forward", 2, true);
+	carousel1 = carousel(".horizontal", ".horizontal-box");
+	carousel1.start("forward", 2, true);
+}
+
+window.onresize = function() {
+	carousel1.stop();
+	carousel1.count = carousel1.ele.scrollLeft = 0;
+	carousel1 = carousel(".horizontal", ".horizontal-box");
+	carousel1.start("forward", 2, true);
 }
