@@ -1,14 +1,15 @@
 var animate = function() {
 	var liner = function(ele, prop, next) {
-		var speed = (next - ele[prop]) / 10,
+		var speed = (next - ele[prop]) / 5,
 		i = 0;
 		ele.animating = true;
 		(function() {
 			ele[prop] += speed;
 			i++;
-			if (i < 10) {
+			if (i < 5) {
 				setTimeout(arguments.callee, 60);
-			} else {
+			}
+			else {
 				ele.animating = false;
 			}
 		})();	
@@ -64,8 +65,8 @@ carouselProto.circle = function() {
 carouselProto.createBtn = function() {
 	var div = document.createElement("div"),
 		btns = '';
-	for (var i=0;i<this.len;i++) {
-		btns += '<a href="" index="' + i + '"></a>';
+	for(var i = 0; i < this.len; i++) {
+		btns += '<a index="' + i + '"></a>';
 	}
 	div.innerHTML = btns;
 	addClass(div, "carousel-btn");
@@ -118,7 +119,8 @@ carouselProto.init = function() {
 	});
 	if (this.direction === "forward") {
 		this.light(0);
-	} else {
+	}
+	else {
 		this.light(this.len - 1);
 		this.ele.scrollLeft = this.width * (this.len - 1);
 	}
@@ -136,7 +138,6 @@ carouselProto.start = function(dir, th, lo) {
 		this.init();
 	}
 	this.begin = setTimeout(function() {
-	//	that = carousel(".horizontal", ".horizontal-box");
 		that.circle();
 	}, that.t);
 };
@@ -168,7 +169,11 @@ window.onload = function() {
 
 window.onresize = function() {
 	carousel1.stop();
-	carousel1.count = carousel1.ele.scrollLeft = 0;
+	var container = document.getElementsByClassName("horizontal-box")[0];
+	container.removeChild(document.getElementsByClassName("carousel-btn")[0]);
+	container.removeChild(document.getElementsByClassName("arrow prev")[0]);
+	container.removeChild(document.getElementsByClassName("arrow next")[0]);
 	carousel1 = carousel(".horizontal", ".horizontal-box");
+	carousel1.ele.scrollLeft = 0;
 	carousel1.start("forward", 2, true);
 }
