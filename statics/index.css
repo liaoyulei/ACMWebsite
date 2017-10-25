@@ -4,38 +4,44 @@
     box-sizing: border-box;
 }
 
-/*
- * -- BASE STYLES --
- * Most of these are inherited from Base, but I want to change a few.
- */
 body {
-    line-height: 1.7em;
-    color: #7f8c8d;
-    font-size: 13px;
+	line-height: 1.5em;
 }
 
 a {
     text-decoration: none;
-    color: rgb(61, 146, 201);
+    color: black;
+	font-weight: bold;
+}
+
+p {
+	margin: 0;
+}
+
+img {
+	max-width: 100%;
 }
 
 /*
  * -- LAYOUT STYLES --
  * These are some useful classes which I will need
  */
+ 
 .l-box {
-    padding: 1em;
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+	margin-left: 0.3em;
+	margin-right: 0.3em;
+	border: 0.1em solid lightblue;
 }
 
 .l-box-lrg {
-    padding: 2em;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+	padding: 1em;
 }
 
 .is-center {
     text-align: center;
 }
-
 
 /*
  * -- MENU STYLES --
@@ -44,9 +50,6 @@ a {
 
 .home-menu {
     padding: 0.5em;
-    text-align: center;
-    box-shadow: 0 1px 1px rgba(0,0,0, 0.10);
-	background: #2d3e50;
 }
 .pure-menu.pure-menu-fixed {
     /* Fixed menus normally have a border at the bottom. */
@@ -56,7 +59,7 @@ a {
 }
 
 .home-menu .pure-menu-heading {
-    color: white;
+    color: black;
     font-weight: 400;
     font-size: 120%;
 }
@@ -65,154 +68,64 @@ a {
     color: white;
 }
 
-.home-menu a {
-    color: #6FBEF3;
+.home-menu li a , .l-box li a{
+    color: black;
 }
-.home-menu li a:hover,
-.home-menu li a:focus {
+
+li a:hover,
+li a:focus {
     background: none;   
     border: none;
-    color: #AECFE5;
-}
-
-
-/*
- * -- SPLASH STYLES --
- * This is the blue top section that appears on the page.
- */
-
-.splash {
-    /* absolute center .splash within .splash-container */
-	z-index: 1;
-	overflow: hidden;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-    position: fixed;
-    top: 100px; left: 0; bottom: 0; right: 0;
-    text-align: center;
-}
-
-
-/*
- * -- CONTENT STYLES --
- * This represents the content area (everything below the blue section)
- */
-.content-wrapper {
-    /* These styles are required for the "scroll-over" effect */
-    position: absolute;
-    top: 65%;
-    width: 100%;
-    min-height: 12%;
-    z-index: 2;
-    background: white;
-
-}
-
-/* This is the class used for the dark-background areas. */
-.ribbon {
-    background: #2d3e50;
-    color: #aaa;
+    color: #8470FF;
 }
 
 /* This is the class used for the footer */
 .footer {
     background: #111;
+	color: white;
     position: fixed;
     bottom: 0;
     width: 100%;
-	z-index: 2;
-}
-
-.sidebar {
-    background: rgb(61, 79, 93);
-    color: #fff;
-	position: fixed;
-	padding-top: 5em;
+	z-index: 1;
+	padding: 0.2em;
 }
 
 .post {
     padding-bottom: 2em;
 }
+
 .post-title {
-    font-size: 2em;
-    color: #222;
+    font-size: 1.5em;
+    color:black;
     margin-bottom: 0.2em;
+	font-weight: bold;
 }
+
 .post-detail {
     font-family: Georgia, "Cambria", serif;
-    color: #444;
+    color:black;
     line-height: 1.8em;
 	border-bottom: 1px solid #eee;
 }
+
 .post-meta {
     color: #999;
-    font-size: 90%;
+    font-size: 0.9em;
     margin: 0;
 }
 
-.content {
-    padding: 5em;
-}
 
 .brand-tagline {
     font-weight: 300;
     color: rgb(176, 202, 219);
+} 
+
+.type {
+	background-color:#6495ED ;
+	color:black;
 }
-/*
- * -- TABLET (AND UP) MEDIA QUERIES --
- * On tablets and other medium-sized devices, we want to customize some
- * of the mobile styles.
- */
-@media (min-width: 48em) {
 
-    /* We increase the body font size */
-    body {
-        font-size: 16px;
-    }
-
-    /* We can align the menu header to the left, but float the
-    menu items to the right. */
-    .home-menu {
-        text-align: left;
-    }
-	.pure-menu-list {
-		right: 0px;
-		position: absolute;
-	}
-
-    /* We increase the height of the splash-container */
-/*    .splash-container {
-        height: 500px;
-    }*/
-
-    /* We decrease the width of the .splash, since we have more width
-    to work with */
-    .splash {
-        width: 50%;
-        height: 50%;
-    }
-
-
-    /* We remove the border-separator assigned to .l-box-lrg */
-    .l-box-lrg {
-        border: none;
-    }
-	
-	.content {
-        padding: 5em;
-        margin-left: 25%;
-    }
-
-    .header {
-        margin: 80% 2em 0;
-        text-align: right;
-    }
-
-    .sidebar {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-    }
-
+.sidebar {
+	color: black;
+	border-right: 1px solid #ccc;
 }

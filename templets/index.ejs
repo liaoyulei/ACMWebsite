@@ -6,86 +6,130 @@
 		<link href="carousel.css" rel="stylesheet" type="text/css" />
 		<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
 	</head>
-	<body>
-		<div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-			<a class="pure-menu-heading" href="index">网站首页</a>
-			<ul class="pure-menu-list">
-				<li class="pure-menu-item"><a href="u?type=news" class="pure-menu-link">新闻报道</a></li>
-				<li class="pure-menu-item"><a href="u?type=acm" class="pure-menu-link">人大ACM</a></li>
-				<li class="pure-menu-item"><a href="u?type=member" class="pure-menu-link">成员简介</a></li>
-				<li class="pure-menu-item"><a href="u?type=teacher" class="pure-menu-link">教师课件</a></li>
-				<li class="pure-menu-item"><a href="u?type=solution" class="pure-menu-link">解题报告</a></li>
-				<li class="pure-menu-item"><a href="oj" class="pure-menu-link">OnlineJudge</a></li>
-			<% if(user){ %>
-				<li class="pure-menu-item"><a href="user" class="pure-menu-link"><%=user.name %></a></li>
-				<li class="pure-menu-item"><a href="logout" class="pure-menu-link">登出</a></li>
-			<% } else{ %>
-				<li class="pure-menu-item"><a href="login" class="pure-menu-link">登入</a></li>
-				<li class="pure-menu-item"><a href="reg" class="pure-menu-link">注册</a></li>
-			<% } %>
-			</ul>
+	
+	<body class="pure-g">
+		<div class="pure-u-1-12"></div>
+		<div class="pure-u-5-6 is-center">
+			<img src="images/logo.png">
+			<div class="home-menu pure-menu pure-menu-horizontal pure-u-1">
+				<ul class="pure-menu-list">
+					<li class="pure-menu-heading"><a href="index">网站首页</a></li>
+					<li class="pure-menu-item"><a href="u?type=news" class="pure-menu-link">新闻报道</a></li>
+					<li class="pure-menu-item"><a href="u?type=acm" class="pure-menu-link">ACM简介</a></li>
+					<li class="pure-menu-item"><a href="u?type=rucacm" class="pure-menu-link">人大ACM</a></li>
+					<li class="pure-menu-item"><a href="u?type=member" class="pure-menu-link">成员简介</a></li>
+					<li class="pure-menu-item"><a href="u?type=teacher" class="pure-menu-link">教师课件</a></li>
+					<li class="pure-menu-item"><a href="u?type=solution" class="pure-menu-link">解题报告</a></li>
+					<li class="pure-menu-item"><a href="oj" class="pure-menu-link">OnlineJudge</a></li>
+				<% if(user) { %>
+					<li class="pure-menu-item"><a href="user" class="pure-menu-link"><%=user.name %></a></li>
+					<li class="pure-menu-item"><a href="logout" class="pure-menu-link">登出</a></li>
+				<% } else{ %>
+					<li class="pure-menu-item"><a href="login" class="pure-menu-link">登入</a></li>
+					<li class="pure-menu-item"><a href="reg" class="pure-menu-link">注册</a></li>
+				<% } %>
+				</ul>
+			</div
 		</div>
+		<div class="pure-u-1-12"></div>
 		
-		<div class="splash" id="splash">
-			<div class="carousel1">
+		<div class="pure-u-1-12"></div>
+		<div class="pure-u-5-24">
+			<div class="l-box">
+				<a href="u?type=news" class="pure-menu-link type">新闻报道</a>
+				<div class="l-box-lrg">
+				<% for(var i=0;i<5&&i<posts[0].length;++i) { %>
+					<li><a href="u?type=<%=posts[0][i].type %>&id=<%=posts[0][i]._id %>"><%=posts[0][i].title %></a></li>
+				<% } %>
+				</div>
+			</div>
+			<div class="l-box">
+				<a href="u?type=acm" class="pure-menu-link type">ACM简介</a>
+				<div class="l-box-lrg">
+				<% for(var i=0;i<5&&i<posts[1].length;++i) { %>
+					<li><a href="u?type=<%=posts[1][i].type %>&id=<%=posts[1][i]._id %>"><%=posts[1][i].title %></a></li>
+				<% } %>
+				</div>
+			</div>
+			<div class="l-box">
+				<a href="u?type=rucacm" class="pure-menu-link type">人大ACM</a>
+				<div class="l-box-lrg">
+				<% for(var i=0;i<5&&i<posts[2].length;++i) { %>
+					<li><a href="u?type=<%=posts[2][i].type %>&id=<%=posts[2][i]._id %>"><%=posts[2][i].title %></a></li>
+				<% } %>
+				</div>
+			</div>
+			<div class="l-box">
+				<a href="u?type=member" class="pure-menu-link type">成员简介</a>
+				<div class="l-box-lrg">
+					<li><a></a></li>
+				<% for (var i=0;i<5&&i<posts[3].length;++i) { %>
+					<li><a href="u?type=<%=posts[3][i].type %>&id=<%=posts[3][i]._id %>"><%=posts[3][i].title %></a></li>
+				<% } %>
+				</div>
+			</div>
+		</div>
+			
+		<div id="carousel" class="pure-u-5-12">
+			<div class="l-box">
 				<div class="horizontal-box carousel-box">
 					<div class="horizontal carousel">
 						<ul class="clearfix">
-							<% for (var i=0;i<image_views.length;++i) { %>
-								<li><img src="<%=image_views[i].url %>" alt=""></li>
-							<% } %>
+							<li><img src="images/0.jpg" alt=""></li>
+							<li><img src="images/1.jpg" alt=""></li>
+							<li><img src="images/2.jpg" alt=""></li>
+							<li><img src="images/3.jpg" alt=""></li>
+							<li><img src="images/4.jpg" alt=""></li>
+							<li><img src="images/5.jpg" alt=""></li>
 						</ul>
 					</div>
 				</div>
 			</div>
+			<div class="l-box">
+				<a class="pure-menu-link type">辉煌历史</a>
+				<p class="is-center"><strong>中国人民大学信息学院ACM队再获亚洲区金牌</strong></p>
+				<p style="text-indent:2em">第37届ACM国际大学生程序设计竞赛（简称ACM-ICPC）亚洲区杭州现场赛再传捷报。中国人民大学信息学院ACM队获亚洲区杭州现场赛金奖。由信息学院学生唐迪（大三）、刘均（大二）、欧阳典（大二）、教师朱青教练（计算机系），教练助理潘余昌组成的中国人民大学ACM队的Kingbase_CJ代表队在激烈的比赛中发挥出自己的水平，展示了人大学子的风采，最终获得金牌的好成绩。</p>
+			</div>
 		</div>
-		
-		<div class="content-wrapper">
-			<div class="l-box-lrg pure-g">
-				<div class="l-box pure-u-1-3">
-					<h3><a href="u?type=news">新闻报道</a></h3>
-					<% for (var i=0;i<5&&i<posts[0].length;++i) { %>
-						<p><a href="u?type=<%=posts[0][i].type %>&id=<%=posts[0][i]._id %>"><%=posts[0][i].title %></a></a></p>
-					<% } %>
-				</div>
-				<div class="l-box pure-u-1-3">
-					<h3><a href="u?type=acm">人大ACM</a></h3>
-					<% for (var i=0;i<5&&i<posts[1].length;++i) { %>
-						<p><a href="u?type=<%=posts[1][i].type %>&id=<%=posts[1][i]._id %>"><%=posts[1][i].title %></a></a></p>
-					<% } %>
-				</div>
-				<div class="l-box pure-u-1-3">
-					<h3><a href="u?type=member">成员简介</a></h3>
-					<% for (var i=0;i<5&&i<posts[2].length;++i) { %>
-						<p><a href="u?type=<%=posts[2][i].type %>&id=<%=posts[2][i]._id %>"><%=posts[2][i].title %></a></a></p>
-					<% } %>
-				</div>     
-			</div>
-
-			<div class="l-box-lrg ribbon pure-g">
-				<div class="l-box pure-u-1-3">
-					<h3><a href="u?type=teacher">教师课件</a></h3>
-					<% for (var i=0;i<5&&i<posts[3].length;++i) { %>
-						<p><a href="u?type=<%=posts[3][i].type %>&id=<%=posts[3][i]._id %>"><%=posts[3][i].title %></a></a></p>
-					<% } %>
-				</div>
-				<div class="l-box pure-u-1-3">
-					<h3><a href="u?type=solution">解题报告</a></h3>
-					<% for (var i=0;i<5&&i<posts[4].length&&i<5;++i) { %>
-						<p><a href="u?type=<%=posts[4][i].type %>&id=<%=posts[4][i]._id %>"><%=posts[4][i].title %></a></a></p>
-					<% } %>
-				</div>
-				<div class="l-box pure-u-1-3">
-					<h3><a href="oj">OnlineJudge</a></h3>
-				</div> 
-			</div>
 			
-			<div class="l-box"></div>
+		<div class="ribbon pure-u-5-24">
+			<div class="l-box">
+				<a href="u?type=teacher" class="pure-menu-link type">教师课件</a>
+				<div class="l-box-lrg">
+				<% for (var i=0;i<5&&i<posts[4].length;++i) { %>
+					<li><a href="u?type=<%=posts[4][i].type %>&id=<%=posts[4][i]._id %>"><%=posts[4][i].title %></a></li>
+				<% } %>
+				</div>
+			</div>
+			<div class="l-box">
+				<a href="u?type=solution" class="pure-menu-link type">解题报告</a>
+				<div class="l-box-lrg">
+				<% for (var i=0;i<5&&i<posts[5].length;++i) { %>
+					<li><a href="u?type=<%=posts[5][i].type %>&id=<%=posts[5][i]._id %>"><%=posts[5][i].title %></a></li>
+				<% } %>
+				</div>
+			</div>
+			<div class="l-box">
+				<a href="oj" class="pure-menu-link type">OnLineJudge</a>
+				<div class="l-box-lrg">
+					<li><a>注册用户</a></li>
+					<li><a>在线提交</a></li>
+					<li><a>最近活动</a></li>
+				</div>
+			</div>
+			<div class="l-box">
+				<a class="pure-menu-link type">友情链接</a>
+				<div class="l-box-lrg">
+				</div>
+			</div>
 		</div>
-
-		<div class="footer l-box is-center">
-			All Copyright Reserved RUC ACM-TEAM
-		</div>
+		<div class="pure-u-1-12"></div>
+		
+		<div class="pure-u-1-12"></div>
+		<div class="pure-u-5-6 is-center"><img src="images/logo1.png"></div>
+		<div class="pure-u-1-12"></div>
+		<div class="l-box-lrg pure-u-1"></div>
+		<div class="footer is-center pure-u-1">All Copyright Reserved RUC ACM-TEAM</div>
 	</body>
 	<script type="text/javascript" src="util.js"></script>
 	<script type="text/javascript" src="carousel.js"></script>
