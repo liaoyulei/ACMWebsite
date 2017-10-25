@@ -14,9 +14,10 @@ module.exports = async(args) => {
 		}
 		posts[0] = (await Post.get("news")).slice(0, 5);
 		posts[1] = (await Post.get("acm")).slice(0, 5);
-		posts[2] = (await Post.get("member")).slice(0, 5);
-		posts[3] = (await Post.get("teacher")).slice(0, 5);
-		posts[4] = (await Post.get("solution")).slice(0,5);
+		posts[2] = (await Post.get("rucacm")).slice(0, 5);
+		posts[3] = (await Post.get("member")).slice(0, 5);
+		posts[4] = (await Post.get("teacher")).slice(0, 5);
+		posts[5] = (await Post.get("solution")).slice(0,5);
 		await ctx.render('index', {
 			user: ctx.session.user,
 			image_views: args,
@@ -172,19 +173,14 @@ module.exports = async(args) => {
 		var posts = await Post.get(ctx.query['type']);
 		if (ctx.query['id']) {
 			for (var i = 0; i < posts.length; ++i) {
-				if (posts[i]._id == ctx.query['id']) {
-					posts[i].detail = posts[i].detail.replace(/ /g, "&ensp;");
-					posts[i].detail = posts[i].detail.replace(/\t/g, "&emsp;");
-					posts[i].detail = posts[i].detail.replace(/\r\n/g, "<br />");
-				}
-				else {
+				if (posts[i]._id != ctx.query['id']) {
 					posts[i].detail = null;
 				}
 			}
 		}
 		else {
 			for (var i=0;i<posts.length;++i) {
-				posts[i].detail = posts[i].detail.substring(0,200);
+				posts[i].detail = posts[i].detail.substring(0,50);
 				posts[i].detail += "……";
 			}
 		}

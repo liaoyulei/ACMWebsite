@@ -18,6 +18,11 @@ p {
 	margin: 0;
 }
 
+pre {
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
 img {
 	max-width: 100%;
 }
