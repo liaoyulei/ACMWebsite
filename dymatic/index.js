@@ -18,9 +18,11 @@ module.exports = async(args) => {
 		posts[3] = (await Post.get("member")).slice(0, 5);
 		posts[4] = (await Post.get("teacher")).slice(0, 5);
 		posts[5] = (await Post.get("solution")).slice(0,5);
+	//	console.log(ctx.session.user);
+		console.log(ctx.session);
 		await ctx.render('index', {
 			user: ctx.session.user,
-			image_views: args,
+			image_user: args,
 			posts: posts
 		});
     })

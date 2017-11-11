@@ -97,7 +97,7 @@ Post.get = function get(type) {
 				if (type) {
 					query.type = type;
 				}
-				collection.find(query).sort({time: -1}).toArray(function(err, docs) {
+				collection.find(query).sort({_id: -1}).toArray(function(err, docs) {
 					mongodb.close();
 					if (err) {
 						resolve();
