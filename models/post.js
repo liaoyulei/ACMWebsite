@@ -1,116 +1,46 @@
-var mongodb = require('./db');
-
-function Post(post) {
-	this.title = post.title;
-	this.meta = post.meta;
-	this.time = post.time;
-	this.detail = post.detail;
-	this.type = post.type;
-};
-module.exports = Post;
-
-Post.save = function save(post) {
-	return new Promise(function(resolve) {
-		//存入 Mongodb 的文档
-		mongodb.open(function(err, db) {
-			if (err) {
-				resolve(err);
-				return;
-			}
-			//读取 posts 集合
-			db.collection('posts', function(err, collection) {
-				if (err) {
-					mongodb.close();
-					resolve(err);
-					return;
-				}
-				//为 type 属性添加索引
-				collection.ensureIndex('type');
-				//写入 user 文档
-				collection.insert(post, {safe: true}, function(err, user) {
-					mongodb.close();
-					resolve();
-				});
-			});
-		});
+var MongoClient = require('mongodb').MongoClient;
+var ObjectId = require('mongodb').ObjectID;
+var db;
+module.exports = function(dbname, IP) {
+	var exports = {};
+	var DB_CONN_STR = `mongodb://${IP}:27017/${dbname}`;
+	MongoClient.connect(DB_CONN_STR, async function(err, ddb) {
+	    console.log("posts连接成功！");
+		db = ddb;
 	});
-};
-
-Post.del = function del(postid) {
-	return new Promise(function(resolve) {
-		mongodb.open(function(err, db) {
-			if (err) {
-				resolve(err);
-				return;
-			}
-			db.collection('posts', function(err, collection) {
-				if (err) {
-					resolve(err);
-					return;
-				}
-				collection.remove({_id: postid}, function(err, doc) {
-					mongodb.close();
-					resolve(err);
-				});
+	
+	exports.get = function(type) {
+		return new Promise(async function(resolve, reject) {
+			var collection = db.collection('posts');
+			var results = await collection.find({type: type}).sort({_id: -1}).toArray();
+			var posts = [];
+			results.forEach(function(result, index) {
+				posts.push(result);
 			});
+			return resolve(posts);
 		});
-	});
+	};
+	
+	exports.set = function(post) {
+		return new Promise(async function(resolve, reject) {
+			var collection = db.collection('posts');
+			if(post._id) {
+				await collection.remove({_id: ObjectId(post._id)});
+				delete post._id;
+			}
+			await collection.ensureIndex('type');
+			await collection.insert(post, {safe: true});
+			return resolve();
+		});
+	};
+	
+	exports.destroy = function(postid) {
+		return new Promise(async function(resolve, reject) {
+			var collection = db.collection('posts');
+			await collection.remove({_id: ObjectId(postid)});
+			return resolve();
+		});
+	};
+	
+	return exports;
 }
-
-Post.update = function update(post) {
-	return new Promise(function(resolve) {
-		mongodb.open(function(err, db) {
-			if (err) {
-				resolve(err);
-				return;
-			}
-			db.collection('posts', function(err, collection) {
-				if (err) {
-					resolve(err);
-					return;
-				}
-				collection.save(post, function(err, doc) {
-					mongodb.close();
-					resolve(err);
-				});
-			});
-		});
-	});
-}
-
-Post.get = function get(type) {
-	return new Promise(function(resolve) {
-		mongodb.open(function(err, db) {
-			if (err) {
-				resolve();
-				return;
-			}
-			//读取 posts 集合
-			db.collection('posts', function(err, collection) {
-				if (err) {
-					mongodb.close();
-					resolve();
-					return;
-				}
-				//查找 type 属性为 type 的文档
-				var query = {};
-				if (type) {
-					query.type = type;
-				}
-				collection.find(query).sort({_id: -1}).toArray(function(err, docs) {
-					mongodb.close();
-					if (err) {
-						resolve();
-						return;
-					}
-					//封装 posts 为 Post 对象
-					var posts = [];
-					docs.forEach(function(doc, index) {
-						posts.push(doc);
-					});
-					resolve(posts);
-				});
-			});
-		});
-	});
-};

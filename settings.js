@@ -1,4 +1,4 @@
 module.exports = {
-	db: 'acmwebsite',
+	db: 'acm',
 	host: 'localhost',
 };

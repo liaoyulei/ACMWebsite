@@ -1,13 +1,13 @@
 var MongoClient = require('mongodb').MongoClient;
 var db;
-module.exports = function(db, IP) {
+module.exports = function(dbname, IP) {
 	var exports = {};
-	var DB_CONN_STR = `mongodb://${IP}:27017/${db}`;
+	var DB_CONN_STR = `mongodb://${IP}:27017/${dbname}`;
 	MongoClient.connect(DB_CONN_STR, async function(err, ddb) {
-	    console.log("连接成功！");
+	    console.log("cl1连接成功！");
 		db = ddb;
 	});
-	var util = require("util");
+	
 	exports.get = function(key) { 
 		return new Promise(async function(resolve, reject) { //get(key, maxAge, { rolling })
 			var collection = db.collection('cl1');

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.1/build/pure-min.css" integrity="sha384-CCTZv2q9I9m3UOxRLaJneXrrqKwUNOzZ6NGEUMwHtShDJ+nCoiXJCAgi05KfkLGY" crossorigin="anonymous">
+		<link href="index.css" rel="stylesheet" type="text/css" />
+		<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+	
+	<body class="pure-g">
+		<div class="pure-u-1-12"></div>
+		<div class="pure-u-5-6 is-center">
+			<img src="images/logo.png">
+			<div class="home-menu pure-menu pure-menu-horizontal pure-u-1">
+				<ul class="pure-menu-list">
+					<li class="pure-menu-heading"><a  href="index">网站首页</a></li>
+					<li class="pure-menu-item"><a href="uadmin?type=news" class="pure-menu-link">新闻报道</a></li>
+					<li class="pure-menu-item"><a href="uadmin?type=acm" class="pure-menu-link">ACM简介</a></li>
+					<li class="pure-menu-item"><a href="uadmin?type=rucacm" class="pure-menu-link">人大ACM</a></li>
+					<li class="pure-menu-item"><a href="uadmin?type=member" class="pure-menu-link">成员简介</a></li>
+					<li class="pure-menu-item"><a href="uadmin?type=teacher" class="pure-menu-link">教师课件</a></li>
+					<li class="pure-menu-item"><a href="uadmin?type=solution" class="pure-menu-link">解题报告</a></li>
+					<li class="pure-menu-item"><a href="oj" class="pure-menu-link">OnlineJudge</a></li>
+				<% if(user) { %>
+					<li class="pure-menu-item"><a href="user" class="pure-menu-link"><%=user.name %></a></li>
+					<li class="pure-menu-item"><a href="logout" class="pure-menu-link">登出</a></li>
+				<% } else{ %>
+					<li class="pure-menu-item"><a href="login" class="pure-menu-link">登入</a></li>
+					<li class="pure-menu-item"><a href="reg" class="pure-menu-link">注册</a></li>
+				<% } %>		
+				</ul>
+			</div>
+		</div>
+		<div class="pure-u-1-12"></div>
+		
+		<div class="pure-u-1-12"></div>
+		<div class="sidebar pure-u-5-24">
+			<form class="pure-form pure-form-aligned" method="post"><fieldset>
+			<% for(var i=0;i<posts.length;i++) { %>
+			    <label class="pure-radio">
+					<li><input id="option" type="radio" name="optionsRadios" value="<%=posts[i]._id %>">
+					<a href="uadmin?type=<%=posts[i].type %>&id=<%=posts[i]._id %>"><%=posts[i].title %></a></li>
+				</label>
+			<% } %>
+				<br /><button name="submit" type="submit" value="del" class="pure-button pure-button-primary">删除</button>
+			</fieldset></form>
+		</div>
+
+		<div class="content pure-u-15-24">
+			<form class="pure-form pure-form-aligned" method="post" enctype="multipart/form-data"><fieldset>
+			<div class="pure-control-group">
+				<label for="title">Title</label>
+				<input id="title" name="title" type="text" placeholder="Title" value="<%=post.title %>" size="50">
+			</div>
+			
+			<div class="pure-control-group">
+				<label for="meta">Meta</label>
+				<input id="meta" name="meta" type="text" placeholder="Meta" value="<%=post.meta %>" size="50">
+			</div>
+			
+			
+			<div class="pure-control-group">
+				<label for="detail">Detail</label>
+				<textarea id="detail" name="detail" type="text" placeholder="Detail" rows="10" cols="50"><%=post.detail %></textarea>
+			</div>
+			
+			<div class="pure-control-group">
+				<label for="detail">Picture</label>
+				<a href="<%=post.picture %>"><%=post.picture %></a>
+				<input id="picture" name="picture" type="file">
+			</div>
+			
+			<div class="pure-control-group">
+				<label for="detail">Attachment</label>
+				<a href="<%=post.attachment %>"><%=post.attachment %></a>
+				<input id="attachment" name="attachment" type="file" value="<%=post.attachment %>">
+			</div>
+			
+			<div class="pure-control-group">
+				<label for="type">Type</label>
+				<select id="type" name="type">
+                    <option value="news" <% if(post.type=="news") {%>selected="selected"<% } %> >新闻报道</option>
+					<option value="acm" <% if(post.type=="acm") {%>selected="selected"<% } %> >ACM简介</option>
+                    <option value="rucacm" <% if(post.type=="rucacm") {%>selected="selected"<% } %> >人大ACM</option>
+                    <option value="member" <% if(post.type=="member") {%>selected="selected"<% } %> >成员简介</option>
+					<option value="teacher" <% if(post.type=="teacher") {%>selected="selected"<% } %> >教师课件</option>
+					<option value="solution" <% if(post.type=="solution") {%>selected="selected"<% } %> >解题报告</option>
+                </select>
+				<button name="submit" type="submit" value="save" class="pure-button pure-button-primary">保存</button>
+			</div>
+			</fieldset></form>
+		</div>
+		<div class="pure-u-1-12"></div>
+		
+		<div class="pure-u-1-12"></div>
+		<div class="pure-u-5-6 is-center"><img src="images/logo1.png"></div>
+		<div class="pure-u-1-12"></div>
+		<div class="l-box-lrg pure-u-1"></div>
+		<div class="footer is-center pure-u-1">All Copyright Reserved RUC ACM-TEAM</div>
+	</body>
+</html>

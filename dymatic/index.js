@@ -1,15 +1,18 @@
 //在这里处理主页(/index)方面的动态内容
+var fs = require('fs');
 var crypto = require('crypto');
+var formidabl = require('formidable');
 var nodemailer = require('nodemailer');
-var User = require('../models/user');
-var Post = require('../models/post');
+var settings = require('../settings');
+var User = require('../models/user')(settings.db, settings.host);
+var Post = require('../models/post')(settings.db, settings.host);
 
 module.exports = async(args) => {
 	args.router
     .redirect('/', '/index')
     .get("/index", async(ctx) => {
 		var args = [], posts = [];
-		for (var i=0;i<14;++i) {
+		for (var i = 0; i < 14; i++) {
 			args.push({url:`/images/${i}.jpg`});
 		}
 		posts[0] = (await Post.get("news")).slice(0, 5);
@@ -18,7 +21,6 @@ module.exports = async(args) => {
 		posts[3] = (await Post.get("member")).slice(0, 5);
 		posts[4] = (await Post.get("teacher")).slice(0, 5);
 		posts[5] = (await Post.get("solution")).slice(0,5);
-	//	console.log(ctx.session.user);
 		console.log(ctx.session);
 		await ctx.render('index', {
 			user: ctx.session.user,
@@ -43,11 +45,10 @@ module.exports = async(args) => {
 		else {
 			var md5 = crypto.createHash('md5');
 			var password = md5.update(ctx.request.body['password']).digest('base64');
-			var newUser = new User({
-				name: ctx.request.body['username'],
-				password: password,
-				email: ctx.request.body['email'],
-			});
+			var newUser = new Object();
+			newUser.name = ctx.request.body['username'];
+			newUser.password = password;
+			newUser.email = ctx.request.body['email'];
 			//检查用户名是否已经存在
 			var user = await User.get(newUser.name);
 			if (user) {
@@ -56,16 +57,9 @@ module.exports = async(args) => {
 				});
 			}
 			else {
-				var err = await User.save(newUser);
-				if (err) {
-					await ctx.render('reg', {
-						hint: "未知错误，请稍候重试"
-					});
-				}
-				else {
-					ctx.session.user = newUser;
-					ctx.redirect('/index');
-				}
+				var err = await User.set(newUser);
+				ctx.session.user = newUser;
+				ctx.redirect('/index');
 			}
 		}
 	})
@@ -94,7 +88,7 @@ module.exports = async(args) => {
                 }
             });  
 			var newusession = "";
-			for (var i = 0; i < 12; ++i) {
+			for (var i = 0; i < 12; i++) {
 				newusession += Math.floor(Math.random() * 10);
 			}
 			transport.sendMail({  
@@ -126,7 +120,12 @@ module.exports = async(args) => {
 			}
 			else{
 				ctx.session.user = user;
-				ctx.redirect('/index');
+				if(user.name == "admin") {
+					ctx.redirect('/admin');
+				}
+				else{
+					ctx.redirect('/index');
+				}
 			}
 		}
 	})
@@ -136,7 +135,7 @@ module.exports = async(args) => {
 		if (user && ctx.query['usession'] == ctx.session.usession) {
 			await ctx.render('forget', {
 				hint: "",
-				user: user
+				user: user.name
 			});
 		}
 	})
@@ -153,16 +152,9 @@ module.exports = async(args) => {
 		else {
 			var md5 = crypto.createHash('md5');
 			user.password = md5.update(ctx.request.body['password']).digest('base64');
-			var err = await User.update(user);
-			if (err) {
-				await ctx.render('/forget', {
-					hint: "未知错误，请稍候重试",
-					user: user
-				});
-			}
-			else {
-				ctx.redirect('/login');
-			}
+			await User.set(user);
+			ctx.session.user = null;
+			ctx.redirect('/login');
 		}
 	})
 	
@@ -173,22 +165,23 @@ module.exports = async(args) => {
 	
 	.get("/u", async(ctx) => {
 		var posts = await Post.get(ctx.query['type']);
-		if (ctx.query['id']) {
-			for (var i = 0; i < posts.length; ++i) {
-				if (posts[i]._id != ctx.query['id']) {
-					posts[i].detail = null;
+		var post = null;
+		if(ctx.query['id']) {
+			for(var i = 0; i < posts.length; i++) {
+				if(posts[i]._id == ctx.query['id']) {
+					post = posts[i];
 				}
+				else delete posts[i].detail;
 			}
 		}
-		else {
-			for (var i=0;i<posts.length;++i) {
-				posts[i].detail = posts[i].detail.substring(0,50);
-				posts[i].detail += "……";
-			}
+		else for(var i = 0; i < posts.length; i++) {
+			posts[i].detail = posts[i].detail.substring(0,50);
+			posts[i].detail += "……";
 		}
 		await ctx.render('u', {
 			user: ctx.session.user,
-			posts: posts
+			posts: posts,
+			post: post
 		});
 	})
 	
@@ -223,44 +216,83 @@ module.exports = async(args) => {
 		//生成口令的散列
 		else {
 			user.password = md5.update(ctx.request.body['password-new']).digest('base64');
-			var err = await User.update(user);
-			if (err) {
-				await ctx.render('user', {
-					hint: "未知错误，请稍候重试"
-				});
-			}
-			else {
-				ctx.session.user = newUser;
-				ctx.redirect('/login');
-			}
+			await User.set(user);
+			ctx.session.user = null;
+			ctx.redirect('/login');
 		}
 	})
 	
-/*	.get("/admin", async (ctx) => {
+    .get("/admin", async(ctx) => {
+		var args = [], posts = [];
+		for (var i = 0; i < 14; i++) {
+			args.push({url:`/images/${i}.jpg`});
+		}
+		posts[0] = (await Post.get("news")).slice(0, 5);
+		posts[1] = (await Post.get("acm")).slice(0, 5);
+		posts[2] = (await Post.get("rucacm")).slice(0, 5);
+		posts[3] = (await Post.get("member")).slice(0, 5);
+		posts[4] = (await Post.get("teacher")).slice(0, 5);
+		posts[5] = (await Post.get("solution")).slice(0,5);
+		console.log(ctx.session);
 		await ctx.render('admin', {
-			hint: ""
+			user: ctx.session.user,
+			image_user: args,
+			posts: posts
 		});
-	})*/
+    })
 	
-/*	.post("/admin", async(ctx) => {
-		var time = new Date();
-		var newPost = new Post({
-			title: ctx.request.body['title'],
-			meta: ctx.request.body['meta'],
-			time: time.getFullYear() + "-" + (time.getMonth() + 1) + "-" + time.getDate(),
-			detail: ctx.request.body['detail'],
-			type: ctx.request.body['type'],
+	.get("/uadmin", async(ctx) => {
+		var posts = await Post.get(ctx.query['type']);
+		var post = new Object();
+		post.type = ctx.query['type'];
+		for(var i = 0; i < posts.length; i++) {
+			if(ctx.query['id'] && posts[i]._id == ctx.query['id']) {
+				post = posts[i];
+			}
+			else delete posts[i].detail;
+		}
+		await ctx.render('uadmin', {
+			user: ctx.session.user,
+			posts: posts,
+			post: post
 		});
-		var err = await Post.save(newPost);
-		if (err) {
-			await ctx.render('admin', {
-				hint: "未知错误，请稍候重试"
-			});
+	})
+	
+	.post("/uadmin", async(ctx) => {
+		console.log(ctx.request.body);
+		if(ctx.request.body['submit'] == "del") {
+			if(ctx.request.body['optionsRadios']) {
+				await Post.destroy(ctx.request.body['optionsRadios']);
+			}
 		}
-		else {
-			await ctx.render('admin', {
-				hint: ""
-			});
+		else if(ctx.request.body['submit'] == "save") {
+			var time = new Date();
+			var newPost = new Object();
+			if(ctx.query['id']) {
+				newPost._id = ctx.query['id'];
+			}
+			newPost.title = ctx.request.body['title'];
+			newPost.meta = ctx.request.body['meta'];
+			newPost.time = time.getFullYear() + "-" + (time.getMonth() + 1) + "-" + time.getDate();
+			newPost.detail = ctx.request.body['detail'];
+			newPost.type = ctx.request.body['type'];
+			console.log("files:");
+			console.log(ctx.files);
+		/*	var form = new formidable.IncomingForm();   //创建上传表单
+			form.uploadDir = 'upload/';     //设置上传目录
+			form.keepExtensions = true;     //保留后缀
+			form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+			form.parse(ctx, function(err, fields, files) {
+				if(err) {
+					console.log(err);
+				}  
+				var filename = files.resource.name;
+				console.log(filename);
+				filename = time + filename;
+				fs.renameSync(files.resource.path, form.uploadDir + filename);  //重命名
+			});*/
+			await Post.set(newPost);
 		}
-	})*/
+		ctx.redirect('/uadmin?type=' + ctx.query['type']);
+	})
 };

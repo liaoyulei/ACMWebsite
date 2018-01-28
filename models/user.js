@@ -1,108 +1,38 @@
-var mongodb = require('./db');
-
-function User(user) {
-	this.name = user.name;
-	this.password = user.password;
-	this.email = user.email;
-};
-module.exports = User;
-
-User.save = function save(user) {
-	return new Promise(function(resolve) {
-		//存入 Mongodb 的文档
-		mongodb.open(function(err, db) {
-			if (err) {
-				resolve(err);
-				return;
-			}
-			//读取 User 集合
-			db.collection('users', function(err, collection) {
-				if (err) {
-					mongodb.close();
-					resolve(err);
-					return;
-				}
-				//为 name 属性添加索引
-				collection.ensureIndex('name', {unique: true});
-				//写入 user 文档
-				collection.insert(user, {safe: true}, function(err, user) {
-					mongodb.close();
-					resolve(err);
-				});
-			});
-		});
+var MongoClient = require('mongodb').MongoClient;
+var db;
+module.exports = function(dbname, IP) {
+	var exports = {};
+	var DB_CONN_STR = `mongodb://${IP}:27017/${dbname}`;
+	MongoClient.connect(DB_CONN_STR, async function(err, ddb) {
+	    console.log("users连接成功！");
+		db = ddb;
 	});
-};
-
-User.del = function del(username) {
-	return new Promise(function(resolve) {
-		mongodb.open(function(err, db) {
-			if (err) {
-				resolve(err);
-				return;
-			}
-			db.collection('users', function(err, collection) {
-				if (err) {
-					resolve(err);
-					return;
-				}
-				collection.remove({name: usename}, function(err, doc) {
-					mongodb.close();
-					resolve(err);
-				});
-			})
+	
+	exports.get = function(username) {
+		return new Promise(async function(resolve, reject) {
+			var collection = db.collection('users');
+			var result = await collection.findOne({name: username}, {_id: 0});
+			return resolve(result);
 		});
-	});
+	};
+	
+	exports.set = function(user) {
+		return new Promise(async function(resolve, reject) {
+			var collection = db.collection('users');
+			await collection.remove({name: user.name});
+			await collection.ensureIndex('name', {unique: true});
+			await collection.insert(user, {safe: 'true'});
+			return resolve();
+		});
+	};
+	
+	exports.destroy = function(username) {
+		return new Promise(async function(resolve, reject) {
+			var collection = db.collection('users');
+			await collection.remove({name: username});
+			return resolve();
+		});
+	};
+	
+	return exports;
 }
-
-User.update = function update(user) {
-	return new Promise(function(resolve) {
-		mongodb.open(function(err, db) {
-			if (err) {
-				resolve(err);
-				return;
-			}
-			db.collection('users', function(err, collection) {
-				if (err) {
-					resolve(err);
-					return;
-				}
-				collection.save(user, function(err, doc) {
-					mongodb.close();
-					resolve(err);
-				});
-			});
-		});
-	});
-}
-
-User.get = function get(username) {
-	return new Promise(function(resolve) {
-		mongodb.open(function(err, db) {
-			if (err) {
-				resolve();
-				return;
-			}
-			//读取 users 集合
-			db.collection('users', function(err, collection) {
-				if (err) {
-					mongodb.close();
-					resolve();
-					return;
-				}
-				//查找 name 属性为 username 的文档
-				collection.findOne({name: username}, function(err, doc) {
-					mongodb.close();
-					if (doc) {
-						//封装文档为 User 对象
-						resolve(doc);
-					}
-					else{
-						resolve();
-					}
-				});
-			});
-		});
-	});
-};
-

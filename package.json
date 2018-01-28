@@ -22,6 +22,6 @@
 		"koa-static": "^4.0.1",
 		"mongodb": "^2.2.30",
 		"nodemailer": "^4.0.1",
-		"wangeditor": "^3.0.12"
+		"formidable": "^1.0.14"
 	}
 }
